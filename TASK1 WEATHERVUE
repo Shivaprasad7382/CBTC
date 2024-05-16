@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherVue</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>WeatherVue</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Current Weather</a></li>
+                <li><a href="#">Forecast</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="current-weather">
+            <h2>Current Weather</h2>
+            <div id="weather-info">
+                <p id="temperature"></p>
+                <p id="description"></p>
+                <p id="wind-speed"></p>
+                <p id="humidity"></p>
+                <img id="weather-icon" src="https://media.istockphoto.com/id/2124910069/photo/thermometer-background-is-blue-sky.webp?b=1&s=170667a&w=0&k=20&c=MkgOy7LPavJGLx7a0qlEUZ5xJAgpITGBLQNilghEBVQ=" alt="Weather Icon">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 WeatherVue. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap');
+
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#current-weather {
+    padding: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+// script.js
+const apiKey = 'YOUR_API_KEY';
+const city = 'New York';
+
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+    .then(response => response.json())
+    .then(data => {
+        const temperature = data.main.temp;
+        const description = data.weather[0].description;
+        const windSpeed = data.wind.speed;
+        const humidity = data.main.humidity;
+        const iconCode = data.weather[0].icon;
+        const iconUrl = `http://openweathermap.org/img/w/${iconCode}.png`;
+
+        document.getElementById('temperature').textContent = `Temperature: ${temperature}°C`;
+        document.getElementById('description').textContent = `Description: ${description}`;
+        document.getElementById('wind-speed').textContent = `Wind Speed: ${windSpeed} m/s`;
+        document.getElementById('humidity').textContent = `Humidity: ${humidity}%`;
+        document.getElementById('weather-icon').src = iconUrl;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
